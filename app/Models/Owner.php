@@ -45,7 +45,12 @@ class Owner extends Authenticatable
 
     public function store()
     {
-        return $this->hasOne(Store::class);
+        return $this->hasMany(Store::class);
+    }
+
+    public function category()
+    {
+        return $this->hasMany(Category::class);
     }
 
     public function profile()

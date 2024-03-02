@@ -29,12 +29,10 @@ const submit = () => {
         onFinish: () => form.reset('password'),
     });
 };
-const goBackHandler = () => {
-    router.get(route('index'));
-};
+
 </script>
 <template>
-    <GuestLayout :showGoBack="true" :goBackHandler="goBackHandler">
+    <GuestLayout >
 
         <Head title="Login " />
         <div class="md:w-1/2 w-full flex justify-center">

@@ -9,9 +9,11 @@ class Store extends Model
 {
     protected $fillable = [
         'name',
-        'location', 
+        'location',
+        'description', 
         'city', 
-        'working_hours'
+        'owner_id',
+        'type_id',
     ];
 
     public function owner()
@@ -22,5 +24,13 @@ class Store extends Model
     public function services()
     {
         return $this->hasMany(Service::class);
+    }
+    public function categorie()
+    {
+        return $this->hasMany(Category::class);
+    }
+    public function images()
+    {
+        return $this->morphMany(Media::class, 'mediable');
     }
 }
