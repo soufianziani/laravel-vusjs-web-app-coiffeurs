@@ -3,11 +3,22 @@ import Footer from '@/Components/Footer.vue';
 import Navbar from '@/Components/Navbar.vue';
 import Section from '@/Components/Section.vue';
 import Stats from '@/Components/Stats.vue'
+import StoresList from '@/Components/StoresList.vue'
+
+const props=defineProps({
+  types:{
+    type:Array,
+  },
+  cities:{
+    type:Array,
+  }
+})
 
 
 </script>
 <template>
-    <Navbar />
+<div class="bg-white">
+  <Navbar />
     <div class="bg-[url('@/Components/images/3.jpg')] w-full min-h-screen bg-center bg-cover flex justify-center items-center">
       <div class="w-full  max-w-[900px] mx-auto py-6 px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-[300%] font-bold text-white ">Réservez un Beauté</h1>
@@ -35,6 +46,8 @@ import Stats from '@/Components/Stats.vue'
     </div>
     <Stats/>
     <Section/>
+    <StoresList :types="types" :cities="cities"/>
     <Footer/>
+</div>
   </template>
   

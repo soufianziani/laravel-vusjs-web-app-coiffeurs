@@ -11,11 +11,11 @@ class Owner
 {
     public function handle(Request $request, Closure $next): Response
     {
-        if(!Auth::guard('owner')->check()){
-            return redirect()->route('owner.login');
+        if(Auth::guard('owner')->check()){
+            return $next($request);
         }
         else{
-            return $next($request);
+            return redirect()->route('owner.login');
         }
     }
 }

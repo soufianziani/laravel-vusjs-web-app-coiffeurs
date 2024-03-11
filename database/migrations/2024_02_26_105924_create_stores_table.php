@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('stores', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('location');
-            $table->string('city');
-            $table->foreignId('owner_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('type_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('city_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('owner_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('type_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -6,9 +6,10 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Media extends Model
+class City extends Model
 {
     use HasFactory;
+
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -20,15 +21,12 @@ class Media extends Model
             $model->{$model->getKeyName()} = (string) Str::uuid();
         });
     }
-
-    protected $fillable = [
-        'filename'
-    ]; 
-
     
+    protected $fillable = [
+        'name'
+    ];
 
-    public function mediable()
-    {
-        return $this->morphTo();
+    public function store(){
+        return $this->hasMany(Store::class);
     }
 }

@@ -14,11 +14,11 @@ class ServiceController extends Controller
     public function index($id){
         
         $store_id = $id;
-        $categorie = Store::findOrFail($store_id)->categorie()->get();
+        $categories = Store::findOrFail($store_id)->categorie()->get();
         
-        return Inertia::render('Owner/create_services' , [
+        return Inertia::render('Owner/CreateServices' , [
             'store_id' => $store_id,
-            'category'=>$categorie 
+            'categories'=>$categories 
         ]);
     }
 
@@ -26,14 +26,14 @@ class ServiceController extends Controller
 
         $validatedData = $request->validate([
             'name' => 'required',
-            'price' => 'required',
+            'price' => 'required|numeric|min:0',
+            'duration' => 'required|numeric|min:0',
             'store_id' => 'required|exists:stores,id',
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable',
         ]);
 
         Service::create($validatedData);
 
-        return 'the service is created successfully';
     }
 
 }

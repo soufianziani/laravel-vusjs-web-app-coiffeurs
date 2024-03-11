@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Store;
 use App\Models\Type;
 use Illuminate\Http\Request;
@@ -11,10 +12,11 @@ use Inertia\Inertia;
 
 class StoreController extends Controller
 {
-    public function index()
+    public function index($id)
     {
-        return Inertia::render('Owner/create_store', [
-            'types' => Type::get(),
+        return Inertia::render('Owner/CreateStore', [
+            'type_id' => $id,
+            'cities'=> City::get(),
             'owner_id' => Auth::guard('owner')->user()->id,
         ]);
     }
@@ -25,10 +27,10 @@ class StoreController extends Controller
             'name' => 'required',
             'description' => 'nullable',
             'location' => 'required',
-            'city' => 'required',
+            'city_id' => 'required',
             'type_id' => 'required|exists:types,id',
             'owner_id' => 'required|exists:owners,id',
-            'image.*' => 'nullable|file|mimes:jpg,jpeg,png',
+            'images.*' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
         // $owner = Auth::guard('owner')->user();
@@ -38,13 +40,13 @@ class StoreController extends Controller
 
         $store = Store::create($validatedData);
     
-        if ($request->hasFile('image')) {
-            foreach ($request->file('image') as $image) {
-                $path = $image->store('images', 'public');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $images) {
+                $path = $images->store('images', 'public');
                 $store->images()->create(['filename' => $path]);
             }
         }
         
-        return redirect()->route('catigorie', ['id' => $store->id]);
+        return redirect()->route('worktime', ['id' => $store->id]);
     }
 }

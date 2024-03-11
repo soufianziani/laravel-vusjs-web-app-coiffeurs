@@ -11,17 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->decimal('price', 8, 2);
-            $table->decimal('duration', 8, 2);
+        Schema::create('work_times', function (Blueprint $table) {
+            $table->id();
+            $table->string('day');
+            $table->time('start_time')->nullable();
+            $table->time('end_time')->nullable();
             $table->foreignUuid('store_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('category_id')->nullable()->constrained()->cascadeOnDelete();
-
+            $table->enum('status', ['open', 'closed'])->default('open');
             $table->timestamps();
-
-
         });
     }
 
@@ -30,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('work_times');
     }
 };

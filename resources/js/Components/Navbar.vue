@@ -37,7 +37,7 @@ onUnmounted(() => {
           <li class="cursor-pointer hover:underline-offset-1 hover:underline">Barbier</li>
           <li class="cursor-pointer hover:underline-offset-1 hover:underline">Manucure</li>
           <li class="cursor-pointer hover:underline-offset-1 hover:underline">Institut de beauté</li>
-          <button @click="router.get(route('register'))"
+          <button @click="router.get(route('owner.register'))"
             class=" text-black hover:bg-opacity-70 bg-gray-200 px-3 py-2 rounded-md">
             Ajoutez votre établissement
           </button>

@@ -11,6 +11,7 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
+use App\Http\Controllers\Owner\Auth\RegisterController;
 use App\Http\Controllers\Owner\LoginController as OwnerLoginController;
 
 Route::middleware('guest')->group(function () {
@@ -63,6 +64,10 @@ Route::middleware('auth')->group(function () {
 Route::controller(LoginController::class)->group(function () {
     Route::get('/owner/login', 'login')->name('owner.login');
     Route::post('/owner/login/authenticate', 'authenticate')->name('owner.login.authenticate');
-    Route::post('/owner/login', 'logout')->name('owner.logout');
+    Route::post('/owner/logout', 'logout')->name('owner.logout');
+});
+Route::controller(RegisterController::class)->group(function(){
+    Route::get('/owner/create/register'  , 'index')->name('owner.register');
+    Route::post('/owner/register'  , 'register')->name('owner.store_register');
 });
 

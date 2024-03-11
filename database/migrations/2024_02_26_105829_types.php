@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('types', function (Blueprint $table){
-            $table->id();
+        Schema::create('types', function(Blueprint $table){
+            $table->uuid('id')->primary();
             $table->string('name');
+            $table->string('title');
+            $table->string('description');
             $table->timestamps();
         });
     }
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('stores_types');
+        //
     }
 };
