@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Service;
 use App\Models\Store;
 use App\Models\Type;
 use App\Models\WorkTime;
@@ -37,15 +38,18 @@ class StoreListController extends Controller
         ->findOrFail($id);
         $worktime = WorkTime::where('store_id' , $id)->get();
 
+        $services = Service::whereNull('category_id')->get();
         foreach ($worktime as $time) {
-            $time->start_time = date('H:i', strtotime($time->start_time));
-            $time->end_time = date('H:i', strtotime($time->end_time));
+            $time->start_time = date('h:i A', strtotime($time->start_time));
+            $time->end_time = date('h:i A', strtotime($time->end_time));
         }
-        // dd($store);
+        
+        // dd($services);
 
         return Inertia::render('ShowStore', [
             'store' => $store , 
             'worktime' =>$worktime,
+            'services' =>$services
         ]);
     }
 }

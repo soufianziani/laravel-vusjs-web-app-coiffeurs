@@ -23,7 +23,7 @@ const emits = defineEmits(['show']);
 </script>
 <template>
     <div class="w-full">
-        <div class="flex flex-col sm:flex-row rounded w-full  hover:scale-100 border border-opacity-0 border-gray-500 hover:border-opacity-20  scale-95 duration-300 gap-2 p-2">
+        <div class="flex flex-col sm:flex-row bg-white hover:drop-shadow-md rounded w-full  my-2 border border-opacity-0 border-gray-500 hover:border-opacity-20  duration-300 gap-2 p-2">
             <img :src="imageUrl" class="rounded  min-w-80 h-48 object-cover object-center" :alt="altText">
             <div class="flex flex-col justify-between w-full">
                 <div>

@@ -4,6 +4,7 @@ import Navbar from '@/Components/Navbar.vue';
 import Section from '@/Components/Section.vue';
 import Stats from '@/Components/Stats.vue'
 import StoresList from '@/Components/StoresList.vue'
+import FAQ from '@/Components/FAQ.vue'
 
 const props=defineProps({
   types:{
@@ -47,6 +48,7 @@ const props=defineProps({
     <Stats/>
     <Section/>
     <StoresList :types="types" :cities="cities"/>
+    <FAQ class=" bg-gray-50 "/>
     <Footer/>
 </div>
   </template>

@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,13 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('appointments', function (Blueprint $table) {
+        Schema::create('services_reservations', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->dateTime('date');
-            $table->foreignUuid('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignUuid('store_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('reservation_id')->constrained()->cascadeOnDelete();
+            $table->foreignUuid('service_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
-
         });
     }
 
@@ -25,7 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('appointments');
+        Schema::dropIfExists('services_reservations');
     }
 };
-?>

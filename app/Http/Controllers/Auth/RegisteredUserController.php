@@ -19,8 +19,16 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): Response
+    public function create()
     {
+        $owner = Auth::guard('owner')->user();
+        
+        if (Auth::guard('owner')->check()) {
+            if($owner->store){
+                return redirect()->route('dashboard');
+            }
+            return redirect()->route('type');
+        }
         return Inertia::render('Auth/Register');
     }
 

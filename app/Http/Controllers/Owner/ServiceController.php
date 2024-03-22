@@ -7,18 +7,22 @@ use App\Models\Category;
 use App\Models\Service;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class ServiceController extends Controller
 {
-    public function index($id){
+    public function index(){
         
-        $store_id = $id;
-        $categories = Store::findOrFail($store_id)->categorie()->get();
-        
-        return Inertia::render('Owner/CreateServices' , [
-            'store_id' => $store_id,
-            'categories'=>$categories 
+        $owner=Auth::guard('owner')->user();
+        $store_id=Store::where('owner_id',$owner->id)->pluck('id');
+        $categories = Category::where('store_id', $store_id)->get();
+        $services = Service::with('category:id,name')->where('store_id', $store_id)->get();
+
+        return Inertia::render('Owner/Services' , [
+            'store_id' => $store_id->first(),
+            'categories'=>$categories ,
+            'services' => $services
         ]);
     }
 
@@ -34,6 +38,10 @@ class ServiceController extends Controller
 
         Service::create($validatedData);
 
+    }
+    public function destroy($id){
+        $service = Service::findOrFail($id);
+        $service->delete();
     }
 
 }

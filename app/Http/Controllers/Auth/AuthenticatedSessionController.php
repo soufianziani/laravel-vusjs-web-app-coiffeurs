@@ -17,12 +17,21 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): Response
+    public function create()
     {
-        return Inertia::render('Auth/Login', [
-            'canResetPassword' => Route::has('password.request'),
-            'status' => session('status'),
-        ]);
+        $owner = Auth::guard('owner')->user();
+        
+        if (Auth::guard('owner')->check()) {
+            if($owner->store){
+                return redirect()->route('dashboard');
+            }
+            return redirect()->route('type');
+        } else {
+            return Inertia::render('Auth/Login', [
+                'canResetPassword' => Route::has('password.request'),
+                'status' => session('status'),
+            ]);
+        }
     }
 
     /**

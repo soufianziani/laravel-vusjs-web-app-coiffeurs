@@ -13,7 +13,7 @@ const props = defineProps({
     canResetPassword: Boolean,
     errors: {
         type: Object,
-    },
+    }
 });
 
 const form = useForm({
@@ -43,6 +43,9 @@ const submit = () => {
             <div class="md:w-1/2 min-w-[400px]  w-full mx-3">
                 <div class="mb-4 text-3xl font-bold text-center text-black">
                     Register For Owner 
+                </div>
+                <div v-if="errors" class="text-center text-red-600">
+                    {{ errors.messagep }}
                 </div>
                 <form @submit.prevent="submit">
                     <div>

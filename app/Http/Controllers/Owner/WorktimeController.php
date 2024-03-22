@@ -3,18 +3,30 @@
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
+use App\Models\Store;
 use Illuminate\Http\Request;
 use App\Models\WorkTime;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class WorkTimeController extends Controller
 {
-    public function index($id)
+    public function index()
     {
+        $owner=Auth::guard('owner')->user();
+        $store_id=Store::where('owner_id',$owner->id)->pluck('id');
+        $worktime = WorkTime::where('store_id' , $store_id)->get();
+
+        foreach ($worktime as $time) {
+            $time->start_time = date('h:i A', strtotime($time->start_time));
+            $time->end_time = date('h:i A', strtotime($time->end_time));
+        }
+
         return Inertia::render(
             'Owner/WorkTime',
             [
-                'store_id' => $id
+                'store_id' => $store_id->first(),
+                'worktime' => $worktime
             ]
         );
     }
@@ -31,9 +43,6 @@ class WorkTimeController extends Controller
             'store_id' => 'required|exists:stores,id',
         ]);
 
-        $store_id = $request->get('store_id');
-
-
         if (empty($validatedData['day'])) {
             return response()->json(['error' => 'No days selected'], 422);
         }
@@ -44,10 +53,10 @@ class WorkTimeController extends Controller
                 'start_time' => $validatedData['start_time'][$index] ?? null,
                 'end_time' => $validatedData['end_time'][$index] ?? null,
                 'store_id' => $validatedData['store_id'],
-                'status' => $validatedData['status'][$index] ?? 'open', // Set status based on the provided value
+                'status' => $validatedData['status'][$index] ?? 'open', 
             ]);
         }
 
-        return redirect()->route('catigorie', ['id' => $store_id]);
     }
+
 }

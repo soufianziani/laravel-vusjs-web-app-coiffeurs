@@ -15,18 +15,7 @@ const props = defineProps({
         type: Object,
     },
 });
-
-const showMessage = ref(true);
-
-const hideMessage = () => {
-    showMessage.value = false;
-}
-
-const message = usePage().props.message;
-
-if (message) {
-    setTimeout(hideMessage, 1000);
-}
+console.log(props.errors)
 
 const form = useForm({
     email: '',
@@ -85,9 +74,9 @@ const reset_password = () => {
                 <div class="mb-4 text-3xl font-bold text-center text-black">
             Login for Owner
         </div>
-                <div div v-if="status"
-                    class="mb-4 flex items-center justify-between font-medium text-center bg-green-200 p-4  text-sm text-green-600">
-                    <p> {{ status }}</p>
+                <div div v-if="errors"
+                    class="text-center text-red-600">
+                    <p> {{ errors.message }}</p>
 
                 </div>
                 <form @submit.prevent="submit">

@@ -1,22 +1,27 @@
-<?php 
+<?php
+
 namespace App\Http\Controllers\Owner;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Store;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rules\Can;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
 {
-    public function index($id)
+    public function index()
     {
-        $store = Store::findOrFail($id); 
-        $categories = $store->categorie; 
+        $owner=Auth::guard('owner')->user();
+        $store_id=Store::where('owner_id',$owner->id)->pluck('id');
+        $categories = Category::where('store_id', $store_id)->get();
 
-        return Inertia::render('Owner/CreateCatigorie', [
-            'store_id' => $id,
-            'categories' => $categories
+
+        return Inertia::render('Owner/Category', [
+            'categories' => $categories,
+            'storeId' => $store_id->first()
         ]);
     }
 
@@ -24,20 +29,16 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required',
-            'description'=>'nullable',
+            'description' => 'nullable',
             'store_id' => 'required|exists:stores,id',
         ]);
-
-        $store_id = $request->get('store_id');
-
         Category::create($validatedData);
 
-        return redirect()->route('catigorie', ['id' => $store_id]);
     }
-    public function destroy(Request $request , $id)
-    {   
+    public function destroy(Request $request, $id)
+    {
         $category = Category::findOrFail($id);
         $category->delete();
-
     }
+   
 }

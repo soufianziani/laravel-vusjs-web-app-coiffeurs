@@ -14,15 +14,26 @@ class StoreController extends Controller
 {
     public function index($id)
     {
+        $owner = Auth::guard('owner')->user();
+
+        if ($owner->store()->exists()) {
+            return redirect()->route('store.worktime', ['id' => $owner->store->id]);
+        }
         return Inertia::render('Owner/CreateStore', [
             'type_id' => $id,
-            'cities'=> City::get(),
-            'owner_id' => Auth::guard('owner')->user()->id,
+            'cities' => City::get(),
+            'owner_id' => $owner->id,
         ]);
     }
-    
+
     public function store(Request $request)
-    {   
+    {
+        $owner = Auth::guard('owner')->user();
+
+        if ($owner->store()->exists()) {
+            return redirect()->route('store.worktime', ['id' => $owner->store->id]);
+        }
+
         $validatedData = $request->validate([
             'name' => 'required',
             'description' => 'nullable',
@@ -33,20 +44,32 @@ class StoreController extends Controller
             'images.*' => 'nullable|image|mimes:jpg,jpeg,png',
         ]);
 
-        // $owner = Auth::guard('owner')->user();
-        // if ($owner->store()->exists()) {
-        //     return redirect()->back()->with(['message' => 'You already have a store']);
-        // }
-
         $store = Store::create($validatedData);
-    
+
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $images) {
                 $path = $images->store('images', 'public');
                 $store->images()->create(['filename' => $path]);
             }
         }
-        
-        return redirect()->route('worktime', ['id' => $store->id]);
+
+        return redirect()->route('store.worktime', ['id' => $store->id]);
+    }
+
+    public function edit()
+    {
+        $store = Auth::guard('owner')->user()->store;
+        $images = $store->images();
+
+        return Inertia::render('Owner/UpdateStore', [
+            'store'=>$store,
+            'images'=>$images
+        ]);
+    }
+
+    public function update(Request $request, $storeId)
+    {
+       
+
     }
 }
