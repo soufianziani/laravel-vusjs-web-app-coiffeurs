@@ -71,7 +71,7 @@ const deleteServices = (id)=> {
             <template #content>
                 <div class="flex flex-col gap-4">
                     <div class=" w-full  bg-white ">
-                        <h1 class="text-xl font-semibold text-center ">Create your categories </h1>
+                        <h1 class="text-xl font-semibold text-center ">Create your Services </h1>
                         <div class="text-center h-8 text-green-500 ">
                             {{ message }}
                         </div>

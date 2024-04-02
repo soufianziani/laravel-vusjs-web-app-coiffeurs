@@ -15,9 +15,9 @@ class RegisterController extends Controller
         $owner = Auth::guard('owner')->user();
 
         if(Auth::guard('web')->check()){
-            return redirect()->route('dashboard');
+            return redirect()->route('login');
         }
-        elseif (Auth::guard('owner')->check()) {
+        if (Auth::guard('owner')->check()) {
             if($owner->store){
                 return redirect()->route('store.worktime' , ['id' , $owner->store->owner_id]);
             }

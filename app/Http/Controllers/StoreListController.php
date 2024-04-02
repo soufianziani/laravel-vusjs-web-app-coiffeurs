@@ -21,10 +21,9 @@ class StoreListController extends Controller
                 $query->where('name', $type);
             })
             ->get();
-
+            
         $types = Type::where('name', $type)->first();
-
-            // dd($types);
+        
         return Inertia::render('Stores' , [
             'stores'=>$stores, 
             'types'=>$types, 
@@ -44,8 +43,8 @@ class StoreListController extends Controller
             $time->end_time = date('h:i A', strtotime($time->end_time));
         }
         
-        // dd($services);
-
+        
+        
         return Inertia::render('ShowStore', [
             'store' => $store , 
             'worktime' =>$worktime,

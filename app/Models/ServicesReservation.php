@@ -14,6 +14,10 @@ class servicesReservation extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
+    protected $fillable = [
+        'reservation_id',
+        'service_id'
+    ];
     public static function boot()
     {
         parent::boot();
@@ -21,6 +25,8 @@ class servicesReservation extends Model
             $model->{$model->getKeyName()} = (string) Str::uuid();
         });
     }
+
+
 
     public function user()
     {

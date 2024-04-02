@@ -54,7 +54,7 @@ const toggleModelImages = () => {
 }
 
 const handleSend = (store_id, service_id) => {
-  router.get(route('reserve', { store_id, service_id }));
+    router.get(route('reserve', { store_id, service_id }));
 }
 
 

@@ -38,7 +38,7 @@ class Reservation extends Model
     {
         return $this->hasMany(ServicesReservation::class);
     }
-
+    
     public function store()
     {
         return $this->belongsTo(Store::class);

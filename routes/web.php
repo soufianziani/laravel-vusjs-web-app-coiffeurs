@@ -6,11 +6,12 @@ use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Owner\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Owner\ServiceController;
-use App\Http\Controllers\Owner\StoreController;
+use App\Http\Controllers\Owner\StoreController;     
 use App\Http\Controllers\Owner\WorkTimeController;
-use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\Owner\ReservationController;
 use App\Http\Controllers\StoreListController;
 use App\Http\Controllers\TypeController;
+use App\Http\Controllers\UserDashboardController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -33,12 +34,15 @@ Route::controller(StoreListController::class)->group(function (){
 });
 
 Route::controller(AppointmentController::class)->group(function(){
+    Route::post('/store/reserve/services', 'store')->name('reserve.store');
     Route::get('/store/reserve/{store_id}/serivce/{service_id}', 'index')->name('reserve');
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('user/dashboard' , [UserDashboardController::class , 'index'])->name('user.dashboard'); 
+    Route::get('user/dashboard/download' , [UserDashboardController::class , 'download'])->name('user.download'); 
+    Route::get('user/dashboard/reservation/show/{id}' , [UserDashboardController::class , 'show'])->name('user.show'); 
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -55,8 +59,10 @@ Route::middleware('owner')->group(function () {
     Route::get('/owner/dashboard/worktime', [WorkTimeController::class, 'index'])->name('store.worktime');
     Route::post('/owner/dashboard/worktime/store', [WorktimeController::class, 'store'])->name('worktime.store');
     Route::get('/owner/dashboard/services', [ServiceController::class, 'index'])->name('store.services');
+    Route::get('/owner/dashboard/store/reservation/' , [ReservationController::class , 'index'])->name('store.reservation');
+    Route::get('/owner/dashboard/store/reservation/show/{id}' , [ReservationController::class , 'show'])->name('reservation.show');
+    Route::post('/owner/dashboard/reservations/{id}/update-status', [ReservationController::class, 'updateStatus'])->name('reservation.updateStatus');
     Route::post('/owner/dashboard/services/store', [ServiceController::class, 'store'])->name('services.store');
-    Route::get('/owner/dashboard/reservation' , [ReservationController::class , 'index'])->name('store.reservation');
     Route::post('/owner/dashboard/update/store/{id}', [StoreController::class, 'update'])->name('store.update');
     Route::get('/owner/dashboard/services/{id}', [StoreController::class, 'edit'])->name('service.edit');
     Route::post('/owner/dashboard/categories/delete/{id}', [CategoryController::class, 'destroy'])->name('category.delete');
