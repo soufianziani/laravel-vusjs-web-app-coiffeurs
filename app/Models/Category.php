@@ -25,14 +25,10 @@ class Category extends Model
     protected $fillable =[
         'name', 
         'description',
-        'store_id', 
+        // 'store_id', 
     ];
 
-    public function store()
-    {
-        return $this->belongsTo(Store::class);
-    }
-
+    
     public function services()
     {
         return $this->hasMany(Service::class);
